@@ -17,7 +17,7 @@ class Product {
 }
 
 List<Product> products = [
-  Product(
+    Product(
       id: 1,
       title: 'David 2077',
       price: 123,

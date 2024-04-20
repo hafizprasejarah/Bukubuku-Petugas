@@ -1,5 +1,5 @@
-import 'package:bukubuku_2/app/routes/app_colors.dart';
-import 'package:bukubuku_2/app/routes/app_pages.dart';
+import 'package:bukubuku_petugas/app/routes/app_colors.dart';
+import 'package:bukubuku_petugas/app/routes/app_pages.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +14,7 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: BgColor,
       // appBar: AppBar(
@@ -25,12 +26,14 @@ class HomeView extends GetView<HomeController> {
       body: SafeArea(
         child: Obx(() {
           // current date(tanggal sekarang)
+           // Ambil data pengguna dari controller
+
           var now = new DateTime.now();
           var formatter = new DateFormat('yyyy-MM-dd');
           String formattedDate = formatter.format(now);
 
           var userData =
-              controller.user.value; // Ambil data pengguna dari controller
+              controller.user.value;
           if (userData != null) {
             return Padding(
               padding: const EdgeInsets.all(25.0),
@@ -55,7 +58,7 @@ class HomeView extends GetView<HomeController> {
                             height: 2,
                           ),
                           Text(
-                            '${formattedDate}',
+                            '${userData.role}',
                             style: TextStyle(
                               color: Colors.white54,
                               fontSize: 12,
@@ -132,7 +135,7 @@ class HomeView extends GetView<HomeController> {
               ),
             );
           } else {
-            return const CircularProgressIndicator(); // Tampilkan indikator loading jika data masih dimuat
+            return Center(child: const CircularProgressIndicator()); // Tampilkan indikator loading jika data masih dimuat
           }
         }),
       ),

@@ -1,6 +1,5 @@
 
-import 'package:bukubuku_2/app/data/model/response_user.dart';
-// import 'package:dio/dio.dart' as dio;
+import 'package:bukubuku_petugas/app/data/model/response_user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,19 +9,20 @@ import '../../../data/provider/api_provider.dart';
 import '../../../data/provider/storage_provider.dart';
 
 class HomeController extends GetxController {
-  Rx<User?> user = Rx<User?>(null);
+  Rx<DataUser?> user = Rx<DataUser?>(null);
 
-  final count = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
     getData();
+
   }
 
   @override
   void onReady() {
     super.onReady();
+
   }
 
   @override
@@ -34,9 +34,9 @@ class HomeController extends GetxController {
   void getData() async {
     try {
       // Ambil token JWT dari penyimpanan lokal
-      String? token = await StorageProvider.read(StorageKey.token);
-
-
+      String? token = await StorageProvider.read('token');
+      String? idUser = await StorageProvider.read(StorageKey.idUser);
+      print(token);
       // Lakukan permintaan GET dengan header yang disertakan
       final response = await ApiProvider.instance().get(
         Endpoint.user,
@@ -51,7 +51,10 @@ class HomeController extends GetxController {
       if (response.statusCode == 200) {
         // Proses data pengguna dari respons
         final ResponseUser responseUser = ResponseUser.fromJson(response.data);
-        user.value = responseUser.data?.user;
+        await StorageProvider.write(StorageKey.token,"$token");
+        await StorageProvider.write(StorageKey.idUser,"$idUser");
+        user.value = responseUser.data;
+        print(user.value);
       } else {
         // Tangani jika permintaan tidak berhasil
         // Misalnya, tampilkan pesan kesalahan kepada pengguna

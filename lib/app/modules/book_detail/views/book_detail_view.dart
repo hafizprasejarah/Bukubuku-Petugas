@@ -1,7 +1,9 @@
+import 'package:bukubuku_petugas/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../data/constant/endpoint.dart';
 import '../../../routes/app_colors.dart';
 import '../controllers/book_detail_controller.dart';
 
@@ -11,29 +13,23 @@ class BookDetailView extends GetView<BookDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Get.arguments.color,
+      backgroundColor: BgColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          color: Get.arguments.color == Colors.white ? TextColor : Colors.white,
+          color: Colors.white,
           onPressed: () => Get.back(),
         ),
         actions: <Widget>[
           IconButton(
-            color:
-                Get.arguments.color == Colors.white ? TextColor : Colors.white,
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(
-              color: Get.arguments.color == Colors.white
-                  ? TextColor
-                  : Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                controller.deleteData(Get.arguments.id);
+              },
               icon: const Icon(
-                Icons.add_shopping_cart,
+                Icons.delete,
+                color: Colors.white,
               )),
           const SizedBox(
             width: DefaultPadding / 2,
@@ -71,93 +67,101 @@ class Body extends StatelessWidget {
                         topLeft: Radius.circular(24),
                         topRight: Radius.circular(24),
                       )),
-                  child: Column(children: <Widget>[
-                    Row(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Color'),
-                              Row(
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ColorDot(
-                                    color: Color(0xFF356C95),
-                                    isSelected: true,
+                                  SizedBox(
+                                    height: 15,
                                   ),
-                                  ColorDot(color: Color(0xFFF8C078)),
-                                  ColorDot(color: Color(0xFF356C95)),
+                                  Text('Color'),
+                                  Row(
+                                    children: [
+                                      ColorDot(
+                                        color: Color(0xFF356C95),
+                                        isSelected: true,
+                                      ),
+                                      ColorDot(color: Color(0xFFF8C078)),
+                                      ColorDot(color: Color(0xFF356C95)),
+                                    ],
+                                  )
                                 ],
+                              ),
+                            ),
+                            Expanded(
+                              child: RichText(
+                                  text: TextSpan(
+                                      style: TextStyle(color: TextColor),
+                                      children: [
+                                    TextSpan(text: 'Kategori\n'),
+                                    TextSpan(
+                                        text: '${Get.arguments.kategori.nama}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold))
+                                  ])),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: DefaultPadding / 2),
+                        Expanded(
+                            child: SingleChildScrollView(child: Description())),
+                        SizedBox(height: DefaultPadding / 2),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            AddFavorit(),
+                          ],
+                        ),
+                        SizedBox(height: DefaultPadding / 2),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: DefaultPadding),
+                          child: Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: DefaultPadding),
+                                height: 50,
+                                width: 58,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(18),
+                                  // border: Border.all(color: Get.arguments.color)
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.comment_rounded),
+                                  // color: Get.arguments.color,
+                                  onPressed: () {},
+                                ),
+                              ),
+                              Expanded(
+                                child: SizedBox(
+                                  height: 50,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.blue),
+                                      onPressed: () {
+                                        Get.toNamed(Routes.UPDATE_BOOK, arguments: Get.arguments);
+                                      },
+                                      child: Text(
+                                        'Edit'.toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      )),
+                                ),
                               )
                             ],
                           ),
-                        ),
-                        Expanded(
-                          child: RichText(
-                              text: TextSpan(
-                                  style: TextStyle(color: TextColor),
-                                  children: [
-                                TextSpan(text: 'Size\n'),
-                                TextSpan(
-                                    text: '${Get.arguments.size} cm',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline5
-                                        ?.copyWith(fontWeight: FontWeight.bold))
-                              ])),
                         )
-                      ],
-                    ),
-                    SizedBox(height: DefaultPadding/2),
-                    Description(),
-                    SizedBox(height: DefaultPadding/2),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CartCounter(),
-                        AddFavorit(),
-                      ],
-                    ),
-                    SizedBox(height: DefaultPadding/2),
-
-                    Padding(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: DefaultPadding),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: DefaultPadding),
-                            height: 50,
-                            width: 58,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
-                                border: Border.all(color: Get.arguments.color)),
-                            child: IconButton(
-                              icon: Icon(Icons.add_shopping_cart),
-                              color: Get.arguments.color,
-                              onPressed: () {},
-                            ),
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              height: 50,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Get.arguments.color),
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Buy Now'.toUpperCase(),
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                  )),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ]),
+                      ]),
                 ),
                 ProductTitleWithImage()
               ],
@@ -181,36 +185,94 @@ class ProductTitleWithImage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Artistocratic Hand Bag',
+            'Karya dari ${Get.arguments.penulis}',
             style: TextStyle(color: Colors.white),
+            overflow: TextOverflow.ellipsis,
           ),
-          Text('${Get.arguments.title}',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+          Text(
+            '${Get.arguments.judul}',
+            style: Theme.of(context)
+                .textTheme
+                .headline4
+                ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(text: 'price\n'),
-                TextSpan(
-                    text: '\$${Get.arguments.price}',
-                    style: Theme.of(context).textTheme.headline4?.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.bold))
-              ])),
+              Container(
+                padding: EdgeInsets.all(DefaultPadding / 9),
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Image.network(
+                  '${Endpoint.Url}${Get.arguments.image}',
+                  height: 200,
+                  width: 135,
+                  fit: BoxFit.fill,
+                ),
+              ),
               SizedBox(
-                height: DefaultPadding * 10 + 20,
+                width: 20,
               ),
               Expanded(
-                  child: Hero(
-                    tag:'${Get.arguments.id}',
-                    child: Image.asset(
-                                    Get.arguments.image,
-                                    height: 200,
-                                    width: 500,
-                                  ),
-                  ))
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                        overflow: TextOverflow.ellipsis,
+                      text: TextSpan(children: [
+                        TextSpan(text: 'Penulis :\n'),
+                        TextSpan(
+                          text: '${Get.arguments.penulis}',
+                          style: Theme.of(context).textTheme.headline6?.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        )
+                      ])),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    RichText(
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(children: [
+                          TextSpan(text: 'Penerbit :\n'),
+                          TextSpan(
+                              text: '${Get.arguments.penerbit}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  ?.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))
+                        ])),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    RichText(
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(children: [
+                          TextSpan(
+                              text: 'Tahun Terbit :\n',
+                              style: TextStyle(color: TextColor)),
+                          TextSpan(
+                              text: '${Get.arguments.tahunTerbit}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  ?.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold))
+                        ])),
+                  ],
+                ),
+              ),
             ],
           )
         ],
@@ -260,60 +322,60 @@ class Description extends StatelessWidget {
   }
 }
 
-class CartCounter extends StatefulWidget {
-  const CartCounter({super.key});
+// class CartCounter extends StatefulWidget {
+//   const CartCounter({super.key});
+//
+//   @override
+//   State<CartCounter> createState() => _CartCounterState();
+// }
+//
+// class _CartCounterState extends State<CartCounter> {
+//   int numoftimes = 1;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         BuildOutlineButton(
+//             press: () {
+//               setState(() {
+//                 if (numoftimes > 1) {
+//                   numoftimes--;
+//                 }
+//               });
+//             },
+//             icon: Icons.remove),
+//         Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: DefaultPadding / 2),
+//           child: Text(
+//             numoftimes.toString().padLeft(2, '0'),
+//             style: Theme.of(context).textTheme.headline6,
+//           ),
+//         ),
+//         BuildOutlineButton(
+//             icon: Icons.add,
+//             press: () {
+//               setState(() {
+//                 numoftimes++;
+//               });
+//             })
+//       ],
+//     );
+//   }
 
-  @override
-  State<CartCounter> createState() => _CartCounterState();
-}
-
-class _CartCounterState extends State<CartCounter> {
-  int numoftimes = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        BuildOutlineButton(
-            press: () {
-              setState(() {
-                if (numoftimes > 1) {
-                  numoftimes--;
-                }
-              });
-            },
-            icon: Icons.remove),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DefaultPadding / 2),
-          child: Text(
-            numoftimes.toString().padLeft(2, '0'),
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        BuildOutlineButton(
-            icon: Icons.add,
-            press: () {
-              setState(() {
-                numoftimes++;
-              });
-            })
-      ],
-    );
-  }
-
-  SizedBox BuildOutlineButton(
-      {required IconData icon, required VoidCallback press}) {
-    return SizedBox(
-      width: 40,
-      height: 32,
-      child: OutlinedButton(
-          onPressed: press,
-          child: Icon(icon),
-          style:
-              ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero))),
-    );
-  }
-}
+//   SizedBox BuildOutlineButton(
+//       {required IconData icon, required VoidCallback press}) {
+//     return SizedBox(
+//       width: 40,
+//       height: 32,
+//       child: OutlinedButton(
+//           onPressed: press,
+//           child: Icon(icon),
+//           style:
+//               ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero))),
+//     );
+//   }
+// }
 
 class AddFavorit extends StatelessWidget {
   const AddFavorit({super.key});
@@ -325,7 +387,7 @@ class AddFavorit extends StatelessWidget {
       width: 32,
       decoration:
           BoxDecoration(color: Color(0xFFFF6464), shape: BoxShape.circle),
-      child: Icon(color: Colors.white, Icons.heart_broken),
+      child: Icon(color: Colors.white, Icons.favorite),
     );
   }
 }

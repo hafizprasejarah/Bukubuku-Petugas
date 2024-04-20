@@ -46,8 +46,13 @@ class LoginController extends GetxController {
 
         if (response.statusCode == 200) {
           final ResponseLogin responseLogin = ResponseLogin.fromJson(response.data);
-          await StorageProvider.write(StorageKey.idUser, responseLogin.data!.user!.toString());
-          await StorageProvider.write(StorageKey.token, responseLogin.data!.token!);
+          if(responseLogin.data!.token != null){
+            await StorageProvider.write(StorageKey.idUser, responseLogin.data!.user!.id.toString());
+            await StorageProvider.write(StorageKey.token, responseLogin.data!.token.toString());
+          }else{
+            Get.snackbar("Sorry", "token tidak ada", backgroundColor: Colors.orange);
+          }
+
           await StorageProvider.write(StorageKey.status, "logged");
           Get.offAllNamed(Routes.HOME);
         } else {

@@ -1,5 +1,5 @@
 
-import 'package:bukubuku_2/app/routes/app_colors.dart';
+import 'package:bukubuku_petugas/app/routes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';

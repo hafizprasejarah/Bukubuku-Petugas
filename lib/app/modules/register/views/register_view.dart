@@ -33,6 +33,18 @@ class RegisterView extends GetView<RegisterController> {
                     },
                   ),
                   TextFormField(
+                    controller: controller.emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                    ),
+                    validator: (value) {
+                      if (value!.length < 2) {
+                        return 'Email';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
                     controller: controller.usernameController,
                     decoration: InputDecoration(
                       hintText: 'Username',

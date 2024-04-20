@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Direktori root aplikasi -->
+    <files-path
+        name="files"
+        path="/" />
+
+    <!-- Direktori cache aplikasi -->
+    <cache-path
+        name="cache"
+        path="/" />
+
+    <!-- Direktori eksternal (jika diizinkan) -->
+    <external-path
+        name="external"
+        path="/" />
+</paths>
